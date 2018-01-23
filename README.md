@@ -1,2 +1,2 @@
-# azurethursdays-chatbots-demo
+# azurethursday-chatbots-demo
 Chatbots: Who is Luis?
