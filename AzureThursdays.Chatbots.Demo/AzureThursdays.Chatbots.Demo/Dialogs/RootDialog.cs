@@ -19,6 +19,32 @@ namespace AzureThursdays.Chatbots.Demo.Dialogs
         {
             var activity = await result as Activity;
 
+            if (activity.Text == "pizza")
+            {
+                var formDialog = new Microsoft.Bot.Builder.FormFlow.FormDialog<Models.Pizza>(new Models.Pizza());
+
+                await context.PostAsync($"Please tell me how you would like your pizza.");
+                await context.Forward(formDialog, PizzaFormComplete, activity);
+            }
+            else
+            {
+                await DefaultMessageReceivedAsync(context, result);
+            }
+        }
+
+        private async Task PizzaFormComplete(IDialogContext context, IAwaitable<Models.Pizza> result)
+        {
+            var activity = await result as Models.Pizza;
+
+            await context.PostAsync($"Your choice: {activity}.");
+
+            context.Wait(MessageReceivedAsync);
+        }
+
+        private async Task DefaultMessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
+        {
+            var activity = await result as Activity;
+
             // calculate something for us to return
             int length = (activity.Text ?? string.Empty).Length;
 
